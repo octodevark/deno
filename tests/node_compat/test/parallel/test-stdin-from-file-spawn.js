@@ -18,7 +18,7 @@ if (process.platform === 'linux' || process.platform === 'darwin') {
   common.skip('This is test exists only on Linux/Win32/OSX');
 }
 
-const { execSync } = require('child_process');
+const { execSync, execFileSync } = require('child_process');
 const fs = require('fs');
 const path = require('path');
 const tmpdir = require('../common/tmpdir');
@@ -46,4 +46,4 @@ setTimeout(() => {
 }, 100);
 `);
 
-execSync(`${process.argv[0]} -A ${tmpJsFile} < ${tmpCmdFile}`);
+execFileSync(process.argv[0], ['-A', tmpJsFile], { input: fs.readFileSync(tmpCmdFile) });
