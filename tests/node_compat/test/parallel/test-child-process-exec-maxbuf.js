@@ -33,20 +33,21 @@ function runChecks(err, stdio, streamName, expected) {
 
 // default value
 {
-  const cmd =
-    `${process.execPath} eval "console.log('a'.repeat(1024 * 1024 - 1))"`;
+  const cmd = process.execPath;
+  const args = ['eval', "console.log('a'.repeat(1024 * 1024 - 1))"];
 
-  cp.exec(cmd, common.mustSucceed((stdout, stderr) => {
+  cp.execFile(cmd, args, common.mustSucceed((stdout, stderr) => {
     assert.strictEqual(stdout.trim(), 'a'.repeat(1024 * 1024 - 1));
     assert.strictEqual(stderr, '');
   }));
 }
 
 {
-  const cmd = `"${process.execPath}" eval "console.log('hello world');"`;
+  const cmd = process.execPath;
+  const args = ['eval', "console.log('hello world');"];
   const options = { maxBuffer: Infinity };
 
-  cp.exec(cmd, options, common.mustSucceed((stdout, stderr) => {
+  cp.execFile(cmd, args, options, common.mustSucceed((stdout, stderr) => {
     assert.strictEqual(stdout.trim(), 'hello world');
     assert.strictEqual(stderr, '');
   }));
